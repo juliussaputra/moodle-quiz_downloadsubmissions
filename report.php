@@ -240,10 +240,10 @@ class quiz_downloadsubmissions_report extends quiz_attempts_report {
     	$fs = get_file_storage();
     	$context = context_course::instance($course->id);
 
-    	// Construct the zip file name.
+		// Construct the zip file name. 
+		// FHGR: WITHOUT ID
     	$filename = clean_filename($course->fullname . ' - ' .
-    			$quiz->name . ' - ' .
-    			$cm->id . '.zip');
+    			$quiz->name .'.zip');
 
     	// Get the file submissions of each student.
     	foreach ($student_attempts as $student) {
@@ -254,15 +254,12 @@ class quiz_downloadsubmissions_report extends quiz_attempts_report {
 
     		$prefix1 = str_replace('_', ' ', $questionid);
 
+			//FHGR Remove id/username from the foldername
     		$prefix2 = '';
-    		if(!empty($student->idnumber)) {
-    			$prefix2 .= $student->idnumber;
-    		} else {
-    			$prefix2 .= $student->username;
-    		}
-    		$prefix2 .= ' - ' . str_replace('_', ' ', fullname($student)) . ' - ' . 'Attempt' . $student->userattemptnum . ' - '. date("Y-m-d g_i a", $student->timestart);
-
-    		$prefix3 = 'Attempt' . $student->userattemptnum . '_';
+			$prefix2 .= ' - ' . str_replace('_', ' ', fullname($student));
+			
+			//FHGR Remove attempt number: for exam
+    		$prefix3 = '';
 
     		// Get question attempt and question context id.
     		$dm = new question_engine_data_mapper();
