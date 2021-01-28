@@ -255,8 +255,16 @@ class quiz_downloadsubmissions_report extends quiz_attempts_report {
     		$prefix1 = str_replace('_', ' ', $questionid);
 
 			//FHGR Remove id/username from the foldername
+			//FHGR Surename will be shown first before the firstname
     		$prefix2 = '';
-			$prefix2 .= ' - ' . str_replace('_', ' ', fullname($student));
+			//$prefix2 .= ' - ' . str_replace('_', ' ', fullname($student));
+			$fullname = str_replace('_', ' ', fullname($student));
+			$nameparts = explode(' ', $fullname);
+			$firstname = array_shift($nameparts);
+			array_push($nameparts, $firstname);
+			
+			$fullnamereversed = implode(' ', $nameparts);
+			$prefix2 .= $fullnamereversed;
 			
 			//FHGR Remove attempt number: for exam
     		$prefix3 = '';
